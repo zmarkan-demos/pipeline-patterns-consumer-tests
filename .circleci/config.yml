@@ -1,0 +1,36 @@
+version: 2.1
+
+parameters:
+  image-name:
+    type: string
+    default: ""
+
+jobs:
+  do-something-with-image:
+    docker: 
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: Echo Image name
+          command: |
+            echo "Image passed is: << pipeline.parameters.image-name >>"
+  
+  no-image-passed:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run: echo "no image passed"
+            
+workflows:
+  trigger-flow:
+    when: << pipeline.parameters.image-name >>
+    jobs:
+      - do-something-with-image
+
+  regular-flow:
+    when:
+      not: << pipeline.parameters.image-name >>
+    jobs:
+      - no-image-passed
