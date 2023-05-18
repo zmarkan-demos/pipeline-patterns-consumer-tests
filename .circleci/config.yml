@@ -24,12 +24,12 @@ jobs:
       - run: echo "no image passed"
             
 workflows:
-  trigger-flow:
+  api-trigger-flow:
     when: << pipeline.parameters.image-name >>
     jobs:
       - do-something-with-image
 
-  regular-flow:
+  commit-flow:
     when:
       not: << pipeline.parameters.image-name >>
     jobs:
